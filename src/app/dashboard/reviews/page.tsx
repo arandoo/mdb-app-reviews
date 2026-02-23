@@ -130,7 +130,21 @@ export default function ReviewsPage() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">Reviews</h1>
-        <span className="text-sm text-gray-500">{total} Reviews gesamt</span>
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-gray-500">{total} Reviews gesamt</span>
+          <Link
+            href="/dashboard/reviews/import"
+            className="px-3 py-2 bg-gray-100 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-200 transition-colors"
+          >
+            CSV Import
+          </Link>
+          <Link
+            href="/dashboard/reviews/new"
+            className="px-3 py-2 bg-amber-600 text-white rounded-md text-sm font-medium hover:bg-amber-700 transition-colors"
+          >
+            + Review hinzufügen
+          </Link>
+        </div>
       </div>
 
       {/* Filters */}
