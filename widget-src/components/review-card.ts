@@ -9,7 +9,7 @@ export function createReviewCard(
   const card = document.createElement("div");
   card.className = "rw-card";
 
-  // Header: stars + date
+  // Header: stars + author
   const header = document.createElement("div");
   header.className = "rw-card-header";
 
@@ -20,11 +20,6 @@ export function createReviewCard(
   author.textContent = ` ${review.customerName}`;
   left.appendChild(author);
   header.appendChild(left);
-
-  const date = document.createElement("span");
-  date.className = "rw-card-date";
-  date.textContent = new Date(review.createdAt).toLocaleDateString("en-US");
-  header.appendChild(date);
 
   card.appendChild(header);
 

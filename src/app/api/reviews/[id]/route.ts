@@ -25,7 +25,7 @@ export async function GET(
   return NextResponse.json({ success: true, data: review });
 }
 
-// PATCH /api/reviews/[id] — Admin: update review (admin reply, edit)
+// PATCH /api/reviews/[id] — Admin: update any review field
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -48,15 +48,31 @@ export async function PATCH(
   }
 
   const updateData: Record<string, unknown> = {};
-  if (parsed.data.adminReply !== undefined) {
-    updateData.adminReply = parsed.data.adminReply;
-    updateData.adminReplyAt = new Date();
+
+  if (parsed.data.customerName !== undefined) {
+    updateData.customerName = parsed.data.customerName;
+  }
+  if (parsed.data.customerEmail !== undefined) {
+    updateData.customerEmail = parsed.data.customerEmail;
+  }
+  if (parsed.data.rating !== undefined) {
+    updateData.rating = parsed.data.rating;
   }
   if (parsed.data.title !== undefined) {
     updateData.title = parsed.data.title;
   }
   if (parsed.data.body !== undefined) {
     updateData.body = parsed.data.body;
+  }
+  if (parsed.data.status !== undefined) {
+    updateData.status = parsed.data.status;
+  }
+  if (parsed.data.adminReply !== undefined) {
+    updateData.adminReply = parsed.data.adminReply;
+    updateData.adminReplyAt = new Date();
+  }
+  if (parsed.data.media !== undefined) {
+    updateData.media = parsed.data.media;
   }
 
   const review = await Review.findByIdAndUpdate(
