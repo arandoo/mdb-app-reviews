@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
 
   if (existing) {
     return NextResponse.json(
-      { error: "Du hast bereits kürzlich ein Review eingereicht. Bitte warte 24 Stunden." },
+      { error: "You have already submitted a review recently. Please wait 24 hours." },
       { status: 429 }
     );
   }

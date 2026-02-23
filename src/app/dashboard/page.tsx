@@ -26,7 +26,7 @@ export default function DashboardPage() {
   }, []);
 
   if (loading) {
-    return <div className="text-gray-500">Laden...</div>;
+    return <div className="text-gray-500">Loading...</div>;
   }
 
   const stats = analytics || {
@@ -44,22 +44,22 @@ export default function DashboardPage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Gesamt Reviews" value={stats.totalReviews} />
+        <StatCard label="Total Reviews" value={stats.totalReviews} />
         <StatCard
-          label="Durchschnitt"
+          label="Average"
           value={stats.averageRating > 0 ? `${stats.averageRating.toFixed(1)} ⭐` : "—"}
         />
         <StatCard
-          label="Ausstehend"
+          label="Pending"
           value={stats.pendingReviews}
           highlight={stats.pendingReviews > 0}
         />
-        <StatCard label="Genehmigt" value={stats.approvedReviews} />
+        <StatCard label="Approved" value={stats.approvedReviews} />
       </div>
 
       {/* Rating Distribution */}
       <div className="bg-white rounded-lg border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold mb-4">Bewertungsverteilung</h2>
+        <h2 className="text-lg font-semibold mb-4">Rating Distribution</h2>
         <div className="space-y-2">
           {[5, 4, 3, 2, 1].map((star) => {
             const count = stats.ratingDistribution[String(star)] || 0;

@@ -25,7 +25,7 @@ export default function LoginPage() {
     setLoading(false);
 
     if (result?.error) {
-      setError("Ungültige Anmeldedaten");
+      setError("Invalid credentials");
     } else {
       router.push("/dashboard");
       router.refresh();
@@ -40,7 +40,7 @@ export default function LoginPage() {
             MDB Reviews
           </h1>
           <p className="text-gray-500 text-center mb-6">
-            Admin-Dashboard Login
+            Admin Dashboard Login
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -55,7 +55,7 @@ export default function LoginPage() {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                E-Mail
+                Email
               </label>
               <input
                 id="email"
@@ -73,7 +73,7 @@ export default function LoginPage() {
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Passwort
+                Password
               </label>
               <input
                 id="password"
@@ -90,7 +90,7 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full bg-amber-500 hover:bg-amber-600 text-white font-medium py-2 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? "Anmelden..." : "Anmelden"}
+              {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
         </div>

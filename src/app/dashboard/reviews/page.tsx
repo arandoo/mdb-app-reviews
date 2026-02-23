@@ -18,9 +18,9 @@ interface ReviewData {
 }
 
 const STATUS_LABELS: Record<string, string> = {
-  pending: "Ausstehend",
-  approved: "Genehmigt",
-  rejected: "Abgelehnt",
+  pending: "Pending",
+  approved: "Approved",
+  rejected: "Rejected",
 };
 
 const STATUS_COLORS: Record<string, string> = {
@@ -86,8 +86,8 @@ export default function ReviewsPage() {
     if (selected.size === 0) return;
     const confirmMsg =
       action === "delete"
-        ? `${selected.size} Review(s) wirklich löschen?`
-        : `${selected.size} Review(s) ${action === "approve" ? "genehmigen" : "ablehnen"}?`;
+        ? `Delete ${selected.size} review(s)?`
+        : `${action === "approve" ? "Approve" : "Reject"} ${selected.size} review(s)?`;
     if (!confirm(confirmMsg)) return;
 
     setActionLoading(true);
@@ -131,7 +131,7 @@ export default function ReviewsPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">Reviews</h1>
         <div className="flex items-center gap-3">
-          <span className="text-sm text-gray-500">{total} Reviews gesamt</span>
+          <span className="text-sm text-gray-500">{total} total reviews</span>
           <Link
             href="/dashboard/reviews/import"
             className="px-3 py-2 bg-gray-100 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-200 transition-colors"
@@ -142,7 +142,7 @@ export default function ReviewsPage() {
             href="/dashboard/reviews/new"
             className="px-3 py-2 bg-amber-600 text-white rounded-md text-sm font-medium hover:bg-amber-700 transition-colors"
           >
-            + Review hinzufügen
+            + Add Review
           </Link>
         </div>
       </div>
@@ -152,10 +152,10 @@ export default function ReviewsPage() {
         {/* Status Tabs */}
         <div className="flex bg-white border border-gray-200 rounded-md overflow-hidden">
           {[
-            { value: "", label: "Alle" },
-            { value: "pending", label: "Ausstehend" },
-            { value: "approved", label: "Genehmigt" },
-            { value: "rejected", label: "Abgelehnt" },
+            { value: "", label: "All" },
+            { value: "pending", label: "Pending" },
+            { value: "approved", label: "Approved" },
+            { value: "rejected", label: "Rejected" },
           ].map((tab) => (
             <button
               key={tab.value}
@@ -180,14 +180,14 @@ export default function ReviewsPage() {
             type="text"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            placeholder="Suche..."
+            placeholder="Search..."
             className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
           />
           <button
             type="submit"
             className="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-md text-sm transition-colors"
           >
-            Suchen
+            Search
           </button>
         </form>
 
@@ -200,10 +200,10 @@ export default function ReviewsPage() {
           }}
           className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
         >
-          <option value="newest">Neueste zuerst</option>
-          <option value="oldest">Älteste zuerst</option>
-          <option value="highest">Beste Bewertung</option>
-          <option value="lowest">Schlechteste Bewertung</option>
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="highest">Highest rating</option>
+          <option value="lowest">Lowest rating</option>
         </select>
       </div>
 
@@ -211,28 +211,28 @@ export default function ReviewsPage() {
       {selected.size > 0 && (
         <div className="flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-md px-4 py-2">
           <span className="text-sm font-medium text-amber-800">
-            {selected.size} ausgewählt
+            {selected.size} selected
           </span>
           <button
             onClick={() => handleBulkAction("approve")}
             disabled={actionLoading}
             className="text-sm text-green-700 hover:text-green-800 font-medium disabled:opacity-50"
           >
-            Genehmigen
+            Approve
           </button>
           <button
             onClick={() => handleBulkAction("reject")}
             disabled={actionLoading}
             className="text-sm text-orange-700 hover:text-orange-800 font-medium disabled:opacity-50"
           >
-            Ablehnen
+            Reject
           </button>
           <button
             onClick={() => handleBulkAction("delete")}
             disabled={actionLoading}
             className="text-sm text-red-700 hover:text-red-800 font-medium disabled:opacity-50"
           >
-            Löschen
+            Delete
           </button>
         </div>
       )}
@@ -240,9 +240,9 @@ export default function ReviewsPage() {
       {/* Table */}
       <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
         {loading ? (
-          <div className="p-8 text-center text-gray-500">Laden...</div>
+          <div className="p-8 text-center text-gray-500">Loading...</div>
         ) : reviews.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">Keine Reviews gefunden.</div>
+          <div className="p-8 text-center text-gray-500">No reviews found.</div>
         ) : (
           <table className="w-full text-sm">
             <thead className="bg-gray-50 border-b border-gray-200">
@@ -256,19 +256,19 @@ export default function ReviewsPage() {
                   />
                 </th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">
-                  Bewertung
+                  Rating
                 </th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">
-                  Titel / Kunde
+                  Title / Customer
                 </th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">
                   Status
                 </th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">
-                  Datum
+                  Date
                 </th>
                 <th className="text-right px-4 py-3 font-medium text-gray-600">
-                  Aktionen
+                  Actions
                 </th>
               </tr>
             </thead>
@@ -309,7 +309,7 @@ export default function ReviewsPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-gray-500">
-                    {new Date(review.createdAt).toLocaleDateString("de-DE")}
+                    {new Date(review.createdAt).toLocaleDateString("en-US")}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex items-center justify-end gap-2">
@@ -319,7 +319,7 @@ export default function ReviewsPage() {
                           disabled={actionLoading}
                           className="text-green-600 hover:text-green-700 text-xs font-medium disabled:opacity-50"
                         >
-                          Genehmigen
+                          Approve
                         </button>
                       )}
                       {review.status !== "rejected" && (
@@ -328,19 +328,19 @@ export default function ReviewsPage() {
                           disabled={actionLoading}
                           className="text-orange-600 hover:text-orange-700 text-xs font-medium disabled:opacity-50"
                         >
-                          Ablehnen
+                          Reject
                         </button>
                       )}
                       <button
                         onClick={() => {
-                          if (confirm("Review wirklich löschen?")) {
+                          if (confirm("Delete this review?")) {
                             handleAction(review._id, "delete");
                           }
                         }}
                         disabled={actionLoading}
                         className="text-red-600 hover:text-red-700 text-xs font-medium disabled:opacity-50"
                       >
-                        Löschen
+                        Delete
                       </button>
                     </div>
                   </td>
@@ -359,17 +359,17 @@ export default function ReviewsPage() {
             disabled={page === 1}
             className="px-3 py-1 border border-gray-300 rounded text-sm disabled:opacity-50 hover:bg-gray-50"
           >
-            Zurück
+            Previous
           </button>
           <span className="text-sm text-gray-600">
-            Seite {page} von {totalPages}
+            Page {page} of {totalPages}
           </span>
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
             className="px-3 py-1 border border-gray-300 rounded text-sm disabled:opacity-50 hover:bg-gray-50"
           >
-            Weiter
+            Next
           </button>
         </div>
       )}

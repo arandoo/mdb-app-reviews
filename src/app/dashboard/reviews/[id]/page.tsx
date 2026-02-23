@@ -29,9 +29,9 @@ interface ReviewDetail {
 }
 
 const STATUS_LABELS: Record<string, string> = {
-  pending: "Ausstehend",
-  approved: "Genehmigt",
-  rejected: "Abgelehnt",
+  pending: "Pending",
+  approved: "Approved",
+  rejected: "Rejected",
 };
 
 const STATUS_COLORS: Record<string, string> = {
@@ -68,7 +68,7 @@ export default function ReviewDetailPage() {
   }
 
   async function handleAction(action: "approve" | "reject" | "delete") {
-    if (action === "delete" && !confirm("Review wirklich löschen?")) return;
+    if (action === "delete" && !confirm("Delete this review?")) return;
     setActionLoading(true);
 
     if (action === "delete") {
@@ -97,19 +97,19 @@ export default function ReviewDetailPage() {
 
     if (json.success) {
       setReview(json.data);
-      setReplyMessage("Antwort gespeichert!");
+      setReplyMessage("Reply saved!");
       setTimeout(() => setReplyMessage(""), 3000);
     } else {
-      setReplyMessage("Fehler beim Speichern.");
+      setReplyMessage("Error saving.");
     }
   }
 
   if (loading) {
-    return <div className="text-gray-500">Laden...</div>;
+    return <div className="text-gray-500">Loading...</div>;
   }
 
   if (!review) {
-    return <div className="text-red-500">Review nicht gefunden.</div>;
+    return <div className="text-red-500">Review not found.</div>;
   }
 
   return (
@@ -119,7 +119,7 @@ export default function ReviewDetailPage() {
         href="/dashboard/reviews"
         className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
       >
-        &larr; Zurück zur Übersicht
+        &larr; Back to overview
       </Link>
 
       {/* Header */}
@@ -146,7 +146,7 @@ export default function ReviewDetailPage() {
               disabled={actionLoading}
               className="bg-green-500 hover:bg-green-600 text-white text-sm font-medium px-4 py-2 rounded-md transition-colors disabled:opacity-50"
             >
-              Genehmigen
+              Approve
             </button>
           )}
           {review.status !== "rejected" && (
@@ -155,7 +155,7 @@ export default function ReviewDetailPage() {
               disabled={actionLoading}
               className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-md transition-colors disabled:opacity-50"
             >
-              Ablehnen
+              Reject
             </button>
           )}
           <button
@@ -163,7 +163,7 @@ export default function ReviewDetailPage() {
             disabled={actionLoading}
             className="bg-red-500 hover:bg-red-600 text-white text-sm font-medium px-4 py-2 rounded-md transition-colors disabled:opacity-50"
           >
-            Löschen
+            Delete
           </button>
         </div>
       </div>
@@ -171,7 +171,7 @@ export default function ReviewDetailPage() {
       {/* Customer Info */}
       <div className="bg-white rounded-lg border border-gray-200 p-6">
         <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
-          Kunde
+          Customer
         </h2>
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
@@ -179,17 +179,17 @@ export default function ReviewDetailPage() {
             <span className="font-medium">{review.customerName}</span>
           </div>
           <div>
-            <span className="text-gray-500">E-Mail:</span>{" "}
+            <span className="text-gray-500">Email:</span>{" "}
             <span className="font-medium">{review.customerEmail}</span>
           </div>
           <div>
-            <span className="text-gray-500">Erstellt am:</span>{" "}
+            <span className="text-gray-500">Created:</span>{" "}
             <span className="font-medium">
-              {new Date(review.createdAt).toLocaleString("de-DE")}
+              {new Date(review.createdAt).toLocaleString("en-US")}
             </span>
           </div>
           <div>
-            <span className="text-gray-500">Hilfreich-Stimmen:</span>{" "}
+            <span className="text-gray-500">Helpful votes:</span>{" "}
             <span className="font-medium">{review.helpfulCount}</span>
           </div>
         </div>
@@ -198,7 +198,7 @@ export default function ReviewDetailPage() {
       {/* Review Body */}
       <div className="bg-white rounded-lg border border-gray-200 p-6">
         <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
-          Review-Text
+          Review Text
         </h2>
         <p className="text-gray-800 whitespace-pre-wrap">{review.body}</p>
       </div>
@@ -207,7 +207,7 @@ export default function ReviewDetailPage() {
       {review.media.length > 0 && (
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
-            Medien ({review.media.length})
+            Media ({review.media.length})
           </h2>
           <div className="flex flex-wrap gap-3">
             {review.media.map((item, index) => (
@@ -236,14 +236,14 @@ export default function ReviewDetailPage() {
       {/* Admin Reply */}
       <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-3">
         <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
-          Admin-Antwort
+          Admin Reply
         </h2>
         <textarea
           value={adminReply}
           onChange={(e) => setAdminReply(e.target.value)}
           rows={3}
           maxLength={2000}
-          placeholder="Antwort auf das Review schreiben..."
+          placeholder="Write a reply to this review..."
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 resize-y text-sm"
         />
         <div className="flex items-center gap-3">
@@ -252,7 +252,7 @@ export default function ReviewDetailPage() {
             disabled={replyLoading}
             className="bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium px-4 py-2 rounded-md transition-colors disabled:opacity-50"
           >
-            {replyLoading ? "Speichern..." : "Antwort speichern"}
+            {replyLoading ? "Saving..." : "Save Reply"}
           </button>
           {replyMessage && (
             <span className="text-sm text-green-600">{replyMessage}</span>
@@ -260,7 +260,7 @@ export default function ReviewDetailPage() {
         </div>
         {review.adminReplyAt && (
           <p className="text-xs text-gray-400">
-            Zuletzt geantwortet: {new Date(review.adminReplyAt).toLocaleString("de-DE")}
+            Last replied: {new Date(review.adminReplyAt).toLocaleString("en-US")}
           </p>
         )}
       </div>

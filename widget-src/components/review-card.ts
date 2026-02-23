@@ -23,7 +23,7 @@ export function createReviewCard(
 
   const date = document.createElement("span");
   date.className = "rw-card-date";
-  date.textContent = new Date(review.createdAt).toLocaleDateString("de-DE");
+  date.textContent = new Date(review.createdAt).toLocaleDateString("en-US");
   header.appendChild(date);
 
   card.appendChild(header);
@@ -71,7 +71,7 @@ export function createReviewCard(
 
     const replyLabel = document.createElement("div");
     replyLabel.className = "rw-card-reply-label";
-    replyLabel.textContent = "Antwort vom Team";
+    replyLabel.textContent = "Response from the team";
 
     const replyText = document.createElement("div");
     replyText.className = "rw-card-reply-text";

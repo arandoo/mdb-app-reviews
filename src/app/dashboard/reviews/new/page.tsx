@@ -32,11 +32,11 @@ export default function NewReviewPage() {
     setError("");
 
     if (!customerName.trim()) {
-      setError("Bitte Kundennamen eingeben");
+      setError("Please enter customer name");
       return;
     }
     if (!body.trim()) {
-      setError("Bitte Review-Text eingeben");
+      setError("Please enter review text");
       return;
     }
 
@@ -62,13 +62,13 @@ export default function NewReviewPage() {
       const json = await res.json();
 
       if (!res.ok) {
-        setError(json.error || "Fehler beim Erstellen");
+        setError(json.error || "Error creating review");
         return;
       }
 
       router.push("/dashboard/reviews");
     } catch {
-      setError("Ein Fehler ist aufgetreten");
+      setError("An error occurred");
     } finally {
       setLoading(false);
     }
@@ -78,16 +78,16 @@ export default function NewReviewPage() {
     <div className="max-w-2xl space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Review hinzufügen</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Add Review</h1>
           <p className="text-sm text-gray-500 mt-1">
-            Manuell ein neues Review erstellen
+            Manually create a new review
           </p>
         </div>
         <Link
           href="/dashboard/reviews"
           className="text-sm text-gray-600 hover:text-gray-900"
         >
-          Zurück zu Reviews
+          Back to Reviews
         </Link>
       </div>
 
@@ -99,26 +99,26 @@ export default function NewReviewPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Kundenname *
+              Customer Name *
             </label>
             <input
               type="text"
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
-              placeholder="Max Mustermann"
+              placeholder="John Doe"
               className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
               required
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              E-Mail
+              Email
             </label>
             <input
               type="email"
               value={customerEmail}
               onChange={(e) => setCustomerEmail(e.target.value)}
-              placeholder="kunde@email.de"
+              placeholder="customer@email.com"
               className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
             />
           </div>
@@ -127,7 +127,7 @@ export default function NewReviewPage() {
         {/* Rating */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Bewertung *
+            Rating *
           </label>
           <StarInput value={rating} onChange={setRating} size="lg" />
         </div>
@@ -135,13 +135,13 @@ export default function NewReviewPage() {
         {/* Title */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Titel
+            Title
           </label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Wird automatisch aus dem Text generiert, wenn leer"
+            placeholder="Auto-generated from text if left empty"
             className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
           />
         </div>
@@ -149,12 +149,12 @@ export default function NewReviewPage() {
         {/* Body */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Review-Text *
+            Review Text *
           </label>
           <textarea
             value={body}
             onChange={(e) => setBody(e.target.value)}
-            placeholder="Das Review des Kunden..."
+            placeholder="Customer's review..."
             rows={5}
             className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 resize-y"
             required
@@ -164,7 +164,7 @@ export default function NewReviewPage() {
         {/* Media Upload */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Fotos / Videos
+            Photos / Videos
           </label>
           <MediaUploader media={media} onChange={setMedia} maxFiles={10} />
         </div>
@@ -179,21 +179,21 @@ export default function NewReviewPage() {
             onChange={(e) => setStatus(e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
           >
-            <option value="approved">Genehmigt</option>
-            <option value="pending">Ausstehend</option>
-            <option value="rejected">Abgelehnt</option>
+            <option value="approved">Approved</option>
+            <option value="pending">Pending</option>
+            <option value="rejected">Rejected</option>
           </select>
         </div>
 
         {/* Admin Reply */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Admin-Antwort (optional)
+            Admin Reply (optional)
           </label>
           <textarea
             value={adminReply}
             onChange={(e) => setAdminReply(e.target.value)}
-            placeholder="Antwort auf das Review..."
+            placeholder="Reply to the review..."
             rows={3}
             className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 resize-y"
           />
@@ -213,13 +213,13 @@ export default function NewReviewPage() {
             disabled={loading}
             className="flex-1 px-4 py-2 bg-amber-600 text-white rounded-md text-sm font-medium hover:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "Wird erstellt..." : "Review erstellen"}
+            {loading ? "Creating..." : "Create Review"}
           </button>
           <Link
             href="/dashboard/reviews"
             className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-200 transition-colors text-center"
           >
-            Abbrechen
+            Cancel
           </Link>
         </div>
       </form>

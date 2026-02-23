@@ -32,7 +32,7 @@ export function ReviewForm({ onSuccess, apiUrl = "/api/reviews" }: ReviewFormPro
     setError("");
 
     if (rating === 0) {
-      setError("Bitte wähle eine Bewertung.");
+      setError("Please select a rating.");
       return;
     }
 
@@ -55,7 +55,7 @@ export function ReviewForm({ onSuccess, apiUrl = "/api/reviews" }: ReviewFormPro
       const json = await res.json();
 
       if (!res.ok) {
-        setError(json.error || "Fehler beim Absenden.");
+        setError(json.error || "Error submitting review.");
         setSubmitting(false);
         return;
       }
@@ -69,7 +69,7 @@ export function ReviewForm({ onSuccess, apiUrl = "/api/reviews" }: ReviewFormPro
       setMedia([]);
       onSuccess?.();
     } catch {
-      setError("Netzwerkfehler. Bitte versuche es erneut.");
+      setError("Network error. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -79,16 +79,16 @@ export function ReviewForm({ onSuccess, apiUrl = "/api/reviews" }: ReviewFormPro
     return (
       <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
         <p className="text-green-700 font-medium text-lg">
-          Vielen Dank für dein Review!
+          Thank you for your review!
         </p>
         <p className="text-green-600 text-sm mt-1">
-          Dein Review wird nach Prüfung veröffentlicht.
+          Your review will be published after approval.
         </p>
         <button
           onClick={() => setSuccess(false)}
           className="mt-4 text-sm text-amber-600 hover:text-amber-700 underline"
         >
-          Weiteres Review schreiben
+          Write another review
         </button>
       </div>
     );
@@ -105,7 +105,7 @@ export function ReviewForm({ onSuccess, apiUrl = "/api/reviews" }: ReviewFormPro
       {/* Rating */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Bewertung *
+          Rating *
         </label>
         <StarInput value={rating} onChange={setRating} size="lg" />
       </div>
@@ -123,12 +123,12 @@ export function ReviewForm({ onSuccess, apiUrl = "/api/reviews" }: ReviewFormPro
             required
             maxLength={100}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-            placeholder="Dein Name"
+            placeholder="Your name"
           />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            E-Mail *
+            Email *
           </label>
           <input
             type="email"
@@ -136,7 +136,7 @@ export function ReviewForm({ onSuccess, apiUrl = "/api/reviews" }: ReviewFormPro
             onChange={(e) => setCustomerEmail(e.target.value)}
             required
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-            placeholder="deine@email.de"
+            placeholder="your@email.com"
           />
         </div>
       </div>
@@ -144,7 +144,7 @@ export function ReviewForm({ onSuccess, apiUrl = "/api/reviews" }: ReviewFormPro
       {/* Title */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Titel *
+          Title *
         </label>
         <input
           type="text"
@@ -153,14 +153,14 @@ export function ReviewForm({ onSuccess, apiUrl = "/api/reviews" }: ReviewFormPro
           required
           maxLength={200}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-          placeholder="Kurze Zusammenfassung"
+          placeholder="Brief summary"
         />
       </div>
 
       {/* Body */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Dein Review *
+          Your Review *
         </label>
         <textarea
           value={body}
@@ -169,14 +169,14 @@ export function ReviewForm({ onSuccess, apiUrl = "/api/reviews" }: ReviewFormPro
           maxLength={5000}
           rows={4}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent resize-y"
-          placeholder="Erzähle von deiner Erfahrung mit den MakeDesignerBags Kursen..."
+          placeholder="Share your experience with MakeDesignerBags courses..."
         />
       </div>
 
       {/* Media Upload */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Fotos / Videos (optional)
+          Photos / Videos (optional)
         </label>
         <MediaUploader media={media} onChange={setMedia} maxFiles={5} />
       </div>
@@ -187,7 +187,7 @@ export function ReviewForm({ onSuccess, apiUrl = "/api/reviews" }: ReviewFormPro
         disabled={submitting}
         className="w-full bg-amber-500 hover:bg-amber-600 text-white font-medium py-3 px-6 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {submitting ? "Wird gesendet..." : "Review absenden"}
+        {submitting ? "Submitting..." : "Submit Review"}
       </button>
     </form>
   );

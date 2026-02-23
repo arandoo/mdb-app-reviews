@@ -93,14 +93,14 @@ export async function POST(request: NextRequest) {
     const file = formData.get("file") as File | null;
     if (!file) {
       return NextResponse.json(
-        { error: "Keine Datei hochgeladen" },
+        { error: "No file uploaded" },
         { status: 400 }
       );
     }
     csvText = await file.text();
   } catch {
     return NextResponse.json(
-      { error: "Fehler beim Lesen der Datei" },
+      { error: "Error reading file" },
       { status: 400 }
     );
   }
@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
 
   if (records.length === 0) {
     return NextResponse.json(
-      { error: "Keine Daten in der CSV-Datei gefunden" },
+      { error: "No data found in CSV file" },
       { status: 400 }
     );
   }
@@ -138,20 +138,20 @@ export async function POST(request: NextRequest) {
       const pictureUrls =
         row["picture_urls"] || row["images"] || row["media"] || "";
 
-      // Validierung
+      // Validation
       if (!customerName) {
-        result.errors.push(`Zeile ${rowNum}: Kein Kundenname`);
+        result.errors.push(`Row ${rowNum}: No customer name`);
         result.skipped++;
         continue;
       }
       if (!body) {
-        result.errors.push(`Zeile ${rowNum}: Kein Review-Text`);
+        result.errors.push(`Row ${rowNum}: No review text`);
         result.skipped++;
         continue;
       }
       if (rating < 1 || rating > 5) {
         result.errors.push(
-          `Zeile ${rowNum}: Ungültige Bewertung (${row["rating"]})`
+          `Row ${rowNum}: Invalid rating (${row["rating"]})`
         );
         result.skipped++;
         continue;
@@ -231,8 +231,8 @@ export async function POST(request: NextRequest) {
 
       result.imported++;
     } catch (err) {
-      const errMsg = err instanceof Error ? err.message : "Unbekannter Fehler";
-      result.errors.push(`Zeile ${rowNum}: ${errMsg}`);
+      const errMsg = err instanceof Error ? err.message : "Unknown error";
+      result.errors.push(`Row ${rowNum}: ${errMsg}`);
       result.skipped++;
     }
   }

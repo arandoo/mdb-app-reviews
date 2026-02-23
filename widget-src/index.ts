@@ -67,7 +67,7 @@ interface WidgetState {
     // Set loading state
     const loadingEl = document.createElement("div");
     loadingEl.className = "rw-loading";
-    loadingEl.textContent = "Reviews werden geladen...";
+    loadingEl.textContent = "Loading reviews...";
     container.appendChild(loadingEl);
 
     // Load config + reviews
@@ -115,7 +115,7 @@ interface WidgetState {
         if (data.stats.totalReviews === 0) {
           const empty = document.createElement("div");
           empty.className = "rw-empty";
-          empty.textContent = "Noch keine Reviews vorhanden. Sei der Erste!";
+          empty.textContent = "No reviews yet. Be the first!";
           wrapper.appendChild(empty);
         }
 
@@ -142,7 +142,7 @@ interface WidgetState {
         container.appendChild(wrapper);
       },
       (err) => {
-        loadingEl.textContent = "Reviews konnten nicht geladen werden.";
+        loadingEl.textContent = "Could not load reviews.";
         console.error("[MDB Reviews]", err);
       }
     );
@@ -173,17 +173,17 @@ interface WidgetState {
 
     const prevBtn = document.createElement("button");
     prevBtn.className = "rw-btn";
-    prevBtn.textContent = "← Zurück";
+    prevBtn.textContent = "← Previous";
 
     const pageInfo = document.createElement("span");
     pageInfo.className = "rw-page-info";
 
     const nextBtn = document.createElement("button");
     nextBtn.className = "rw-btn";
-    nextBtn.textContent = "Weiter →";
+    nextBtn.textContent = "Next →";
 
     function updatePagination() {
-      pageInfo.textContent = `Seite ${state.currentPage} von ${state.totalPages}`;
+      pageInfo.textContent = `Page ${state.currentPage} of ${state.totalPages}`;
       prevBtn.disabled = state.currentPage <= 1;
       nextBtn.disabled = state.currentPage >= state.totalPages;
     }
@@ -191,7 +191,7 @@ interface WidgetState {
     async function loadPage(page: number) {
       prevBtn.disabled = true;
       nextBtn.disabled = true;
-      pageInfo.textContent = "Laden...";
+      pageInfo.textContent = "Loading...";
 
       try {
         const data = await api.fetchReviews(page);

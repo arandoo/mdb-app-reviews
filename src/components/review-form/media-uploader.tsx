@@ -29,7 +29,7 @@ export function MediaUploader({
     if (!files || files.length === 0) return;
 
     if (media.length + files.length > maxFiles) {
-      setError(`Maximal ${maxFiles} Dateien erlaubt`);
+      setError(`Maximum ${maxFiles} files allowed`);
       return;
     }
 
@@ -55,7 +55,7 @@ export function MediaUploader({
         const maxSize = isVideo ? 50 * 1024 * 1024 : 10 * 1024 * 1024;
         if (file.size > maxSize) {
           setError(
-            `${file.name} ist zu groß. Max ${isVideo ? "50" : "10"}MB.`
+            `${file.name} is too large. Max ${isVideo ? "50" : "10"}MB.`
           );
           continue;
         }
@@ -95,7 +95,7 @@ export function MediaUploader({
 
       onChange([...media, ...newMedia]);
     } catch {
-      setError("Upload fehlgeschlagen. Bitte versuche es erneut.");
+      setError("Upload failed. Please try again.");
     } finally {
       setUploading(false);
       if (fileInputRef.current) {
@@ -153,7 +153,7 @@ export function MediaUploader({
             ) : (
               <>
                 <span className="text-xl text-gray-400">+</span>
-                <span className="text-xs text-gray-400">Foto/Video</span>
+                <span className="text-xs text-gray-400">Photo/Video</span>
               </>
             )}
           </label>

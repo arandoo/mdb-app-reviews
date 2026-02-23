@@ -10,7 +10,7 @@ export function createReviewForm(
 
   const title = document.createElement("div");
   title.className = "rw-form-title";
-  title.textContent = "Schreibe ein Review";
+  title.textContent = "Write a Review";
   section.appendChild(title);
 
   // Error / success messages
@@ -33,7 +33,7 @@ export function createReviewForm(
   ratingGroup.className = "rw-form-group";
   const ratingLabel = document.createElement("label");
   ratingLabel.className = "rw-form-label";
-  ratingLabel.textContent = "Bewertung *";
+  ratingLabel.textContent = "Rating *";
   ratingGroup.appendChild(ratingLabel);
 
   let selectedRating = 0;
@@ -55,7 +55,7 @@ export function createReviewForm(
   const nameInput = document.createElement("input");
   nameInput.className = "rw-form-input";
   nameInput.type = "text";
-  nameInput.placeholder = "Dein Name";
+  nameInput.placeholder = "Your name";
   nameInput.required = true;
   nameInput.maxLength = 100;
   nameGroup.appendChild(nameLabel);
@@ -66,11 +66,11 @@ export function createReviewForm(
   emailGroup.className = "rw-form-group";
   const emailLabel = document.createElement("label");
   emailLabel.className = "rw-form-label";
-  emailLabel.textContent = "E-Mail *";
+  emailLabel.textContent = "Email *";
   const emailInput = document.createElement("input");
   emailInput.className = "rw-form-input";
   emailInput.type = "email";
-  emailInput.placeholder = "deine@email.de";
+  emailInput.placeholder = "your@email.com";
   emailInput.required = true;
   emailGroup.appendChild(emailLabel);
   emailGroup.appendChild(emailInput);
@@ -83,11 +83,11 @@ export function createReviewForm(
   titleGroup.className = "rw-form-group";
   const titleLabel = document.createElement("label");
   titleLabel.className = "rw-form-label";
-  titleLabel.textContent = "Titel *";
+  titleLabel.textContent = "Title *";
   const titleInput = document.createElement("input");
   titleInput.className = "rw-form-input";
   titleInput.type = "text";
-  titleInput.placeholder = "Kurze Zusammenfassung";
+  titleInput.placeholder = "Brief summary";
   titleInput.required = true;
   titleInput.maxLength = 200;
   titleGroup.appendChild(titleLabel);
@@ -99,10 +99,10 @@ export function createReviewForm(
   bodyGroup.className = "rw-form-group";
   const bodyLabel = document.createElement("label");
   bodyLabel.className = "rw-form-label";
-  bodyLabel.textContent = "Dein Review *";
+  bodyLabel.textContent = "Your Review *";
   const bodyInput = document.createElement("textarea");
   bodyInput.className = "rw-form-textarea";
-  bodyInput.placeholder = "Erzähle von deiner Erfahrung...";
+  bodyInput.placeholder = "Share your experience...";
   bodyInput.required = true;
   bodyInput.maxLength = 5000;
   bodyGroup.appendChild(bodyLabel);
@@ -114,7 +114,7 @@ export function createReviewForm(
   uploadGroup.className = "rw-form-group";
   const uploadLabel = document.createElement("label");
   uploadLabel.className = "rw-form-label";
-  uploadLabel.textContent = "Fotos (optional)";
+  uploadLabel.textContent = "Photos (optional)";
   uploadGroup.appendChild(uploadLabel);
 
   const uploadArea = document.createElement("div");
@@ -157,7 +157,7 @@ export function createReviewForm(
     if (uploadedFiles.length < 5) {
       const addBtn = document.createElement("label");
       addBtn.className = "rw-form-upload-btn";
-      addBtn.innerHTML = "<span>+</span><span>Foto</span>";
+      addBtn.innerHTML = "<span>+</span><span>Photo</span>";
 
       const fileInput = document.createElement("input");
       fileInput.type = "file";
@@ -167,7 +167,7 @@ export function createReviewForm(
         const file = fileInput.files?.[0];
         if (!file) return;
         if (file.size > 10 * 1024 * 1024) {
-          showMsg("Datei zu groß (max 10MB)", "error");
+          showMsg("File too large (max 10MB)", "error");
           return;
         }
 
@@ -200,7 +200,7 @@ export function createReviewForm(
             });
           }
         } catch {
-          showMsg("Upload fehlgeschlagen", "error");
+          showMsg("Upload failed", "error");
         }
 
         renderUploads();
@@ -219,34 +219,34 @@ export function createReviewForm(
   submitBtn.className = "rw-btn rw-btn-primary";
   submitBtn.style.width = "100%";
   submitBtn.style.marginTop = "8px";
-  submitBtn.textContent = "Review absenden";
+  submitBtn.textContent = "Submit Review";
 
   submitBtn.addEventListener("click", async () => {
     hideMsg();
 
     if (selectedRating === 0) {
-      showMsg("Bitte wähle eine Bewertung.", "error");
+      showMsg("Please select a rating.", "error");
       return;
     }
     if (!nameInput.value.trim()) {
-      showMsg("Bitte gib deinen Namen ein.", "error");
+      showMsg("Please enter your name.", "error");
       return;
     }
     if (!emailInput.value.trim()) {
-      showMsg("Bitte gib deine E-Mail ein.", "error");
+      showMsg("Please enter your email.", "error");
       return;
     }
     if (!titleInput.value.trim()) {
-      showMsg("Bitte gib einen Titel ein.", "error");
+      showMsg("Please enter a title.", "error");
       return;
     }
     if (!bodyInput.value.trim()) {
-      showMsg("Bitte schreibe dein Review.", "error");
+      showMsg("Please write your review.", "error");
       return;
     }
 
     submitBtn.disabled = true;
-    submitBtn.textContent = "Wird gesendet...";
+    submitBtn.textContent = "Submitting...";
 
     try {
       const result = await api.submitReview({
@@ -259,7 +259,7 @@ export function createReviewForm(
       });
 
       if (result.success) {
-        showMsg("Vielen Dank! Dein Review wird nach Prüfung veröffentlicht.", "success");
+        showMsg("Thank you! Your review will be published after approval.", "success");
         nameInput.value = "";
         emailInput.value = "";
         titleInput.value = "";
@@ -274,14 +274,14 @@ export function createReviewForm(
         ratingGroup.replaceChild(newStarInput.element, ratingGroup.lastElementChild!);
         onSubmitted();
       } else {
-        showMsg(result.error || "Fehler beim Absenden.", "error");
+        showMsg(result.error || "Error submitting review.", "error");
       }
     } catch {
-      showMsg("Netzwerkfehler. Bitte versuche es erneut.", "error");
+      showMsg("Network error. Please try again.", "error");
     }
 
     submitBtn.disabled = false;
-    submitBtn.textContent = "Review absenden";
+    submitBtn.textContent = "Submit Review";
   });
 
   section.appendChild(submitBtn);

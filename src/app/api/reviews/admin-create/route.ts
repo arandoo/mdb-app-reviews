@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
   const parsed = adminCreateSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
-      { error: "Validierung fehlgeschlagen", details: parsed.error.flatten() },
+      { error: "Validation failed", details: parsed.error.flatten() },
       { status: 400 }
     );
   }
