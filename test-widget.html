@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Widget Test - MDB Reviews</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+      background: #f5f5f5;
+    }
+    h1 { color: #333; }
+    p { color: #666; }
+    .info {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+    code { background: #e9ecef; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <h1>MDB Reviews Widget Test</h1>
+  <div class="info">
+    <strong>Anleitung:</strong><br>
+    1. Starte die App mit <code>npm run dev</code><br>
+    2. Führe <code>npm run seed</code> aus (erstellt Admin + Settings mit API Key)<br>
+    3. Öffne diese Datei mit <code>python3 -m http.server 8080</code> auf einem anderen Port<br>
+    4. Ersetze <code>YOUR_API_KEY</code> unten mit dem API Key aus der Seed-Ausgabe
+  </div>
+
+  <p>Hier ist das eingebettete Widget:</p>
+  <hr>
+
+  <!-- MDB Reviews Widget -->
+  <script
+    src="http://localhost:3000/widget/reviews-widget.js"
+    data-api-key="YOUR_API_KEY"
+    async defer
+  ></script>
+  <div id="reviews-widget"></div>
+
+  <hr>
+  <p><small>Diese Seite simuliert eine externe Website, die das Widget einbettet.</small></p>
+</body>
+</html>
