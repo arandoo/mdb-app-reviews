@@ -20,34 +20,59 @@ export function createStarInput(
   initialValue = 0
 ): { element: HTMLElement; getValue: () => number } {
   let currentValue = initialValue;
+  let hoverValue = 0;
   const container = document.createElement("div");
   container.className = "rw-stars rw-stars-input";
 
-  function render(hoverValue = 0) {
-    container.innerHTML = "";
-    for (let i = 1; i <= 5; i++) {
-      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      svg.setAttribute("viewBox", "0 0 20 20");
-      svg.setAttribute(
-        "class",
-        `rw-star ${i <= (hoverValue || currentValue) ? "rw-star-filled" : ""}`
-      );
-      svg.innerHTML = STAR_SVG;
-      svg.style.cursor = "pointer";
+  const buttons: HTMLButtonElement[] = [];
 
-      svg.addEventListener("mouseenter", () => render(i));
-      svg.addEventListener("click", () => {
-        currentValue = i;
-        onChange(i);
-        render();
-      });
+  for (let i = 1; i <= 5; i++) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.style.cssText = "background:none;border:none;padding:0;margin:0;cursor:pointer;outline:none;";
 
-      container.appendChild(svg);
-    }
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 20 20");
+    svg.setAttribute("class", `rw-star`);
+    svg.innerHTML = STAR_SVG;
+    svg.style.pointerEvents = "none";
+    btn.appendChild(svg);
+
+    btn.addEventListener("mouseenter", () => {
+      hoverValue = i;
+      updateStars();
+    });
+
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      currentValue = i;
+      hoverValue = 0;
+      onChange(i);
+      updateStars();
+    });
+
+    buttons.push(btn);
+    container.appendChild(btn);
   }
 
-  container.addEventListener("mouseleave", () => render());
-  render();
+  container.addEventListener("mouseleave", () => {
+    hoverValue = 0;
+    updateStars();
+  });
+
+  function updateStars() {
+    const activeValue = hoverValue || currentValue;
+    buttons.forEach((btn, idx) => {
+      const svg = btn.querySelector("svg")!;
+      if (idx + 1 <= activeValue) {
+        svg.setAttribute("class", "rw-star rw-star-filled");
+      } else {
+        svg.setAttribute("class", "rw-star");
+      }
+    });
+  }
+
+  updateStars();
 
   return { element: container, getValue: () => currentValue };
 }
