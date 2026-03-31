@@ -162,13 +162,19 @@ export function createReviewForm(
       const fileInput = document.createElement("input");
       fileInput.type = "file";
       fileInput.accept = "image/*";
+      fileInput.multiple = true;
       fileInput.style.display = "none";
       fileInput.addEventListener("change", async () => {
-        const file = fileInput.files?.[0];
-        if (!file) return;
+        const files = Array.from(fileInput.files || []);
+        if (files.length === 0) return;
+
+        const maxSlots = 5 - uploadedFiles.length;
+        const filesToUpload = files.slice(0, maxSlots);
+
+        for (const file of filesToUpload) {
         if (file.size > 10 * 1024 * 1024) {
-          showMsg("File too large (max 10MB)", "error");
-          return;
+          showMsg(`"${file.name}" is too large (max 10MB)`, "error");
+          continue;
         }
 
         addBtn.innerHTML = "<span>...</span>";
@@ -198,12 +204,18 @@ export function createReviewForm(
                 "/upload/w_200,h_200,c_fill/"
               ),
             });
+          } else {
+            console.error("[MDB Reviews] Upload error:", uploadData);
+            showMsg("Upload failed. Please try again.", "error");
           }
-        } catch {
-          showMsg("Upload failed", "error");
+        } catch (err) {
+          console.error("[MDB Reviews] Upload error:", err);
+          showMsg("Upload failed. Please try again.", "error");
         }
+        } // end for loop
 
         renderUploads();
+        fileInput.value = "";
       });
 
       addBtn.appendChild(fileInput);
