@@ -177,7 +177,7 @@ export function createReviewForm(
           continue;
         }
 
-        addBtn.innerHTML = "<span>...</span>";
+        addBtn.innerHTML = `<span class="rw-spinner"></span><span>Uploading</span>`;
 
         try {
           const signData = await api.getUploadSignature();
