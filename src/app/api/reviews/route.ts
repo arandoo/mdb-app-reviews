@@ -3,6 +3,12 @@ import { auth } from "../../../../auth";
 import { connectDB } from "@/lib/db";
 import { Review, ReviewStatus, Settings } from "@/lib/models";
 import { createReviewSchema } from "@/lib/validations/review";
+import { corsHeaders, corsResponse, jsonWithCors } from "@/lib/cors";
+
+// OPTIONS /api/reviews — CORS preflight
+export async function OPTIONS() {
+  return corsResponse();
+}
 
 // GET /api/reviews — Admin: list reviews with pagination, filter, search
 export async function GET(request: NextRequest) {
@@ -74,14 +80,14 @@ export async function POST(request: NextRequest) {
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+    return jsonWithCors({ error: "Invalid JSON" }, 400);
   }
 
   const parsed = createReviewSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json(
+    return jsonWithCors(
       { error: "Validation failed", details: parsed.error.flatten() },
-      { status: 400 }
+      400
     );
   }
 
@@ -95,9 +101,9 @@ export async function POST(request: NextRequest) {
   });
 
   if (existing) {
-    return NextResponse.json(
+    return jsonWithCors(
       { error: "You have already submitted a review recently. Please wait 24 hours." },
-      { status: 429 }
+      429
     );
   }
 
@@ -116,8 +122,8 @@ export async function POST(request: NextRequest) {
     status,
   });
 
-  return NextResponse.json(
+  return jsonWithCors(
     { success: true, data: review },
-    { status: 201 }
+    201
   );
 }

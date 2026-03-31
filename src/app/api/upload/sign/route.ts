@@ -1,5 +1,9 @@
-import { NextResponse } from "next/server";
 import cloudinary from "@/lib/cloudinary";
+import { corsHeaders, corsResponse, jsonWithCors } from "@/lib/cors";
+
+export async function OPTIONS() {
+  return corsResponse();
+}
 
 export async function POST() {
   const timestamp = Math.round(new Date().getTime() / 1000);
@@ -10,7 +14,7 @@ export async function POST() {
     process.env.CLOUDINARY_API_SECRET!
   );
 
-  return NextResponse.json({
+  return jsonWithCors({
     signature,
     timestamp,
     folder,
