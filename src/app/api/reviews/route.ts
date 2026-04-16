@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/db";
 import { Review, ReviewStatus, Settings } from "@/lib/models";
 import { createReviewSchema } from "@/lib/validations/review";
 import { corsHeaders, corsResponse, jsonWithCors } from "@/lib/cors";
+import { syncReviewToChallenge } from "@/lib/challenge-sync";
 
 // OPTIONS /api/reviews — CORS preflight
 export async function OPTIONS() {
@@ -121,6 +122,19 @@ export async function POST(request: NextRequest) {
     ...data,
     status,
   });
+
+  // If auto-approved AND tagged as challenge, sync to the Challenge App
+  const r = review.toObject() as any;
+  if (status === ReviewStatus.APPROVED && r.product === "5-day-challenge") {
+    syncReviewToChallenge({
+      reviewId: String(r._id),
+      name: r.customerName,
+      email: r.customerEmail,
+      rating: r.rating,
+      text: r.body,
+      photoUrl: r.media?.[0]?.url,
+    });
+  }
 
   return jsonWithCors(
     { success: true, data: review },

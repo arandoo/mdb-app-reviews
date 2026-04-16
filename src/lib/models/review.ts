@@ -24,6 +24,11 @@ export interface IReview extends Document {
   helpfulCount: number;
   adminReply?: string;
   adminReplyAt?: Date;
+  /** Which product/course this review belongs to. Only "5-day-challenge"
+   *  reviews get synced to the Challenge App Wall of Fame. */
+  product?: string;
+  /** Where this review originated: "review-app" | "challenge-app" */
+  source?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -72,6 +77,17 @@ const reviewSchema = new Schema<IReview>(
     helpfulCount: { type: Number, default: 0 },
     adminReply: { type: String, trim: true, maxlength: 2000 },
     adminReplyAt: Date,
+    product: {
+      type: String,
+      trim: true,
+      index: true,
+      default: null,
+    },
+    source: {
+      type: String,
+      trim: true,
+      default: "review-app",
+    },
   },
   { timestamps: true }
 );
