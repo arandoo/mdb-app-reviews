@@ -121,6 +121,8 @@ export async function POST(request: NextRequest) {
   const review = await Review.create({
     ...data,
     status,
+    product: data.product || null,
+    source: "review-app",
   });
 
   // If auto-approved AND tagged as challenge, sync to the Challenge App

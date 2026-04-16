@@ -11,17 +11,42 @@ interface UploadedMedia {
   thumbnailUrl?: string;
 }
 
+const PRODUCTS = [
+  { value: "", label: "— Select a course" },
+  { value: "5-day-challenge", label: "5-Day Bag Making Challenge (free)" },
+  { value: "pro-addon", label: "PRO Addon – Bag Sewing Fundamentals" },
+  { value: "challenge-vip", label: "Challenge VIP-Package" },
+  { value: "bucket-bag", label: "Designer Bucket Bag – Course Bundle" },
+  { value: "boho-tote", label: "BOHO Tote" },
+  { value: "street-style-tote", label: "Street Style Tote" },
+  { value: "chain-mini-shoulder", label: "Luxury Chain Mini Shoulder Bag" },
+  { value: "tote-oversized", label: "Tote Bag Oversized" },
+  { value: "glasses-case", label: "Glasses Case" },
+  { value: "eco-bandana-tote", label: "ECO-Friendly Bandana Tote" },
+  { value: "neck-pillow", label: "Smart Stash Neck Pillow" },
+];
+
 interface ReviewFormProps {
   onSuccess?: () => void;
   apiUrl?: string;
+  /** Pre-select a product (e.g. when embedded on a specific course page) */
+  defaultProduct?: string;
+  /** Hide the product picker (use when defaultProduct is set) */
+  hideProductPicker?: boolean;
 }
 
-export function ReviewForm({ onSuccess, apiUrl = "/api/reviews" }: ReviewFormProps) {
+export function ReviewForm({
+  onSuccess,
+  apiUrl = "/api/reviews",
+  defaultProduct = "",
+  hideProductPicker = false,
+}: ReviewFormProps) {
   const [rating, setRating] = useState(0);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
+  const [product, setProduct] = useState(defaultProduct);
   const [media, setMedia] = useState<UploadedMedia[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -49,6 +74,7 @@ export function ReviewForm({ onSuccess, apiUrl = "/api/reviews" }: ReviewFormPro
           title,
           body,
           media,
+          product: product || undefined,
         }),
       });
 
@@ -66,6 +92,7 @@ export function ReviewForm({ onSuccess, apiUrl = "/api/reviews" }: ReviewFormPro
       setBody("");
       setCustomerName("");
       setCustomerEmail("");
+      setProduct(defaultProduct);
       setMedia([]);
       onSuccess?.();
     } catch {
@@ -140,6 +167,27 @@ export function ReviewForm({ onSuccess, apiUrl = "/api/reviews" }: ReviewFormPro
           />
         </div>
       </div>
+
+      {/* Product */}
+      {!hideProductPicker && (
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Which course is this review for? *
+          </label>
+          <select
+            value={product}
+            onChange={(e) => setProduct(e.target.value)}
+            required
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent text-sm"
+          >
+            {PRODUCTS.map((p) => (
+              <option key={p.value} value={p.value}>
+                {p.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       {/* Title */}
       <div>
