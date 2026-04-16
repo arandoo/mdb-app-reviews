@@ -74,6 +74,10 @@ export async function PATCH(
   if (parsed.data.media !== undefined) {
     updateData.media = parsed.data.media;
   }
+  // product is passed outside Zod validation for now (optional field)
+  if (body.product !== undefined) {
+    updateData.product = body.product || null;
+  }
 
   const review = await Review.findByIdAndUpdate(
     id,

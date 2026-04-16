@@ -24,6 +24,7 @@ export default function NewReviewPage() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [status, setStatus] = useState("approved");
+  const [product, setProduct] = useState("");
   const [media, setMedia] = useState<MediaItem[]>([]);
   const [adminReply, setAdminReply] = useState("");
 
@@ -55,6 +56,7 @@ export default function NewReviewPage() {
           body: body.trim(),
           media,
           status,
+          product: product || undefined,
           adminReply: adminReply.trim() || undefined,
         }),
       });
@@ -183,6 +185,34 @@ export default function NewReviewPage() {
             <option value="pending">Pending</option>
             <option value="rejected">Rejected</option>
           </select>
+        </div>
+
+        {/* Product */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Product / Course
+          </label>
+          <select
+            value={product}
+            onChange={(e) => setProduct(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+          >
+            <option value="">— None (general)</option>
+            <option value="5-day-challenge">5-Day Bag Making Challenge (free)</option>
+            <option value="pro-addon">PRO Addon – Bag Sewing Fundamentals</option>
+            <option value="challenge-vip">Challenge VIP-Package</option>
+            <option value="bucket-bag">Designer Bucket Bag – Course Bundle</option>
+            <option value="boho-tote">BOHO Tote</option>
+            <option value="street-style-tote">Street Style Tote</option>
+            <option value="chain-mini-shoulder">Luxury Chain Mini Shoulder Bag</option>
+            <option value="tote-oversized">Tote Bag Oversized</option>
+            <option value="glasses-case">Glasses Case</option>
+            <option value="eco-bandana-tote">ECO-Friendly Bandana Tote</option>
+            <option value="neck-pillow">Smart Stash Neck Pillow</option>
+          </select>
+          <p className="text-xs text-gray-400 mt-1">
+            Only &quot;5-Day Challenge&quot; reviews sync to the Challenge App Wall of Fame.
+          </p>
         </div>
 
         {/* Admin Reply */}

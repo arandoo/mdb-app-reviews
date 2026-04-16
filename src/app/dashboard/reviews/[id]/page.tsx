@@ -20,6 +20,8 @@ interface ReviewDetail {
   title: string;
   body: string;
   status: "pending" | "approved" | "rejected";
+  product?: string;
+  source?: string;
   media: ReviewMedia[];
   helpfulCount: number;
   adminReply?: string;
@@ -56,6 +58,7 @@ export default function ReviewDetailPage() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [status, setStatus] = useState("approved");
+  const [product, setProduct] = useState("");
   const [media, setMedia] = useState<ReviewMedia[]>([]);
   const [adminReply, setAdminReply] = useState("");
 
@@ -75,6 +78,7 @@ export default function ReviewDetailPage() {
       setTitle(r.title);
       setBody(r.body);
       setStatus(r.status);
+      setProduct(r.product || "");
       setMedia(r.media || []);
       setAdminReply(r.adminReply || "");
     }
@@ -110,6 +114,7 @@ export default function ReviewDetailPage() {
           title: title.trim() || body.trim().substring(0, 50) + (body.trim().length > 50 ? "..." : ""),
           body: body.trim(),
           status,
+          product: product || undefined,
           media,
           adminReply: adminReply.trim() || undefined,
         }),
@@ -335,6 +340,51 @@ export default function ReviewDetailPage() {
               ))}
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Product / Source */}
+      <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-4">
+        <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+          Product
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Product / Course
+            </label>
+            <select
+              value={product}
+              onChange={(e) => setProduct(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+            >
+              <option value="">— None (general)</option>
+              <option value="5-day-challenge">5-Day Bag Making Challenge (free)</option>
+              <option value="pro-addon">PRO Addon – Bag Sewing Fundamentals</option>
+              <option value="challenge-vip">Challenge VIP-Package</option>
+              <option value="bucket-bag">Designer Bucket Bag – Course Bundle</option>
+              <option value="boho-tote">BOHO Tote</option>
+              <option value="street-style-tote">Street Style Tote</option>
+              <option value="chain-mini-shoulder">Luxury Chain Mini Shoulder Bag</option>
+              <option value="tote-oversized">Tote Bag Oversized</option>
+              <option value="glasses-case">Glasses Case</option>
+              <option value="eco-bandana-tote">ECO-Friendly Bandana Tote</option>
+              <option value="neck-pillow">Smart Stash Neck Pillow</option>
+            </select>
+            <p className="text-xs text-gray-400 mt-1">
+              Only &quot;5-Day Challenge&quot; reviews sync to the Challenge App.
+            </p>
+          </div>
+          {review.source && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Source
+              </label>
+              <p className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-sm text-gray-600">
+                {review.source}
+              </p>
+            </div>
+          )}
         </div>
       </div>
 

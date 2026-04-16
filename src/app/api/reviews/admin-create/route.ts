@@ -22,6 +22,7 @@ const adminCreateSchema = z.object({
     .max(10)
     .default([]),
   status: z.enum(["pending", "approved", "rejected"]).default("approved"),
+  product: z.string().max(50).trim().optional(),
   adminReply: z.string().max(2000).trim().optional(),
 });
 
@@ -60,6 +61,8 @@ export async function POST(request: NextRequest) {
     media: data.media,
     status: data.status as ReviewStatus,
     helpfulCount: 0,
+    product: data.product || null,
+    source: "review-app",
   };
 
   if (data.adminReply) {
