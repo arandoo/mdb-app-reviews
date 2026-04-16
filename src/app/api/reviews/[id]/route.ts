@@ -96,14 +96,18 @@ export async function PATCH(
   // "5-day-challenge" — without this, only approve + create triggered
   // the sync.
   const r = review as any;
-  if (r.status === "approved" && r.product === "5-day-challenge") {
+  if (
+    r.status === "approved" &&
+    r.product === "5-day-challenge" &&
+    r.media?.length > 0
+  ) {
     syncReviewToChallenge({
       reviewId: String(r._id),
       name: r.customerName,
       email: r.customerEmail,
       rating: r.rating,
       text: r.body,
-      photoUrl: r.media?.[0]?.url,
+      photoUrl: r.media[0]?.url,
     });
   }
 

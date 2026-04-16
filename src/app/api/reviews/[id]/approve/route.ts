@@ -30,14 +30,14 @@ export async function PATCH(
   // Only sync "5-day-challenge" reviews to the Challenge App Wall of Fame.
   // Reviews for other courses (Fundamentals, etc.) stay here only.
   const r = review as any;
-  if (r.product === "5-day-challenge") {
+  if (r.product === "5-day-challenge" && r.media?.length > 0) {
     syncReviewToChallenge({
       reviewId: String(r._id),
       name: r.customerName,
       email: r.customerEmail,
       rating: r.rating,
       text: r.body,
-      photoUrl: r.media?.[0]?.url,
+      photoUrl: r.media[0]?.url,
     });
   }
 

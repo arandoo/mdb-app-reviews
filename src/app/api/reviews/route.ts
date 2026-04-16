@@ -127,14 +127,18 @@ export async function POST(request: NextRequest) {
 
   // If auto-approved AND tagged as challenge, sync to the Challenge App
   const r = review.toObject() as any;
-  if (status === ReviewStatus.APPROVED && r.product === "5-day-challenge") {
+  if (
+    status === ReviewStatus.APPROVED &&
+    r.product === "5-day-challenge" &&
+    r.media?.length > 0
+  ) {
     syncReviewToChallenge({
       reviewId: String(r._id),
       name: r.customerName,
       email: r.customerEmail,
       rating: r.rating,
       text: r.body,
-      photoUrl: r.media?.[0]?.url,
+      photoUrl: r.media[0]?.url,
     });
   }
 
