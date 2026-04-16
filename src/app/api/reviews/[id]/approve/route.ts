@@ -31,7 +31,7 @@ export async function PATCH(
   // Reviews for other courses (Fundamentals, etc.) stay here only.
   const r = review as any;
   if (r.product === "5-day-challenge" && r.media?.length > 0) {
-    syncReviewToChallenge({
+    await syncReviewToChallenge({
       reviewId: String(r._id),
       name: r.customerName,
       email: r.customerEmail,
