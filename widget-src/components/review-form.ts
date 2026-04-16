@@ -1,9 +1,26 @@
 import { WidgetAPI } from "../api";
 import { createStarInput } from "./stars";
 
+const PRODUCTS = [
+  { value: "", label: "— Select a course" },
+  { value: "5-day-challenge", label: "5-Day Bag Making Challenge (free)" },
+  { value: "pro-addon", label: "PRO Addon – Bag Sewing Fundamentals" },
+  { value: "challenge-vip", label: "Challenge VIP-Package" },
+  { value: "bucket-bag", label: "Designer Bucket Bag – Course Bundle" },
+  { value: "boho-tote", label: "BOHO Tote" },
+  { value: "street-style-tote", label: "Street Style Tote" },
+  { value: "chain-mini-shoulder", label: "Luxury Chain Mini Shoulder Bag" },
+  { value: "tote-oversized", label: "Tote Bag Oversized" },
+  { value: "glasses-case", label: "Glasses Case" },
+  { value: "eco-bandana-tote", label: "ECO-Friendly Bandana Tote" },
+  { value: "neck-pillow", label: "Smart Stash Neck Pillow" },
+];
+
 export function createReviewForm(
   api: WidgetAPI,
-  onSubmitted: () => void
+  onSubmitted: () => void,
+  /** Pre-selected product (from data-product attribute on the embed script) */
+  defaultProduct?: string
 ): HTMLElement {
   const section = document.createElement("div");
   section.className = "rw-form-section";
@@ -77,6 +94,32 @@ export function createReviewForm(
   row.appendChild(emailGroup);
 
   section.appendChild(row);
+
+  // Product selector (hidden if defaultProduct is pre-set)
+  let selectedProduct = defaultProduct || "";
+  const productGroup = document.createElement("div");
+  productGroup.className = "rw-form-group";
+  if (!defaultProduct) {
+    const productLabel = document.createElement("label");
+    productLabel.className = "rw-form-label";
+    productLabel.textContent = "Which course is this review for? *";
+    productGroup.appendChild(productLabel);
+
+    const productSelect = document.createElement("select");
+    productSelect.className = "rw-form-input";
+    productSelect.required = true;
+    for (const p of PRODUCTS) {
+      const opt = document.createElement("option");
+      opt.value = p.value;
+      opt.textContent = p.label;
+      productSelect.appendChild(opt);
+    }
+    productSelect.addEventListener("change", () => {
+      selectedProduct = productSelect.value;
+    });
+    productGroup.appendChild(productSelect);
+    section.appendChild(productGroup);
+  }
 
   // Title
   const titleGroup = document.createElement("div");
@@ -256,6 +299,10 @@ export function createReviewForm(
       showMsg("Please write your review.", "error");
       return;
     }
+    if (!defaultProduct && !selectedProduct) {
+      showMsg("Please select which course this review is for.", "error");
+      return;
+    }
 
     submitBtn.disabled = true;
     submitBtn.textContent = "Submitting...";
@@ -268,6 +315,7 @@ export function createReviewForm(
         title: titleInput.value.trim(),
         body: bodyInput.value.trim(),
         media: uploadedFiles,
+        product: selectedProduct || undefined,
       });
 
       if (result.success) {

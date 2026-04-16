@@ -36,6 +36,10 @@ interface WidgetState {
   const apiKey = scriptEl.getAttribute("data-api-key");
   const targetSelector =
     scriptEl.getAttribute("data-target") || "#reviews-widget";
+  // Optional: pre-select a product so users on a course page don't
+  // have to pick it themselves. Usage:
+  //   <script ... data-product="5-day-challenge"></script>
+  const defaultProduct = scriptEl.getAttribute("data-product") || undefined;
 
   if (!apiKey) {
     console.error("[MDB Reviews] data-api-key attribute is required");
@@ -127,15 +131,18 @@ interface WidgetState {
 
         // Review form
         if (wc.showReviewForm) {
-          const form = createReviewForm(api, () => {
-            // Reload reviews after submission
-            api.fetchReviews(1).then((freshData) => {
-              state.currentPage = 1;
-              state.totalPages = freshData.totalPages;
-              state.reviews = freshData.reviews;
-              renderReviews(listEl, state.reviews, wc.showMedia);
-            });
-          });
+          const form = createReviewForm(
+            api,
+            () => {
+              api.fetchReviews(1).then((freshData) => {
+                state.currentPage = 1;
+                state.totalPages = freshData.totalPages;
+                state.reviews = freshData.reviews;
+                renderReviews(listEl, state.reviews, wc.showMedia);
+              });
+            },
+            defaultProduct
+          );
           wrapper.appendChild(form);
         }
 

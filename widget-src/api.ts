@@ -75,6 +75,7 @@ export class WidgetAPI {
     title: string;
     body: string;
     media: { type: string; url: string; publicId: string; thumbnailUrl?: string }[];
+    product?: string;
   }): Promise<{ success: boolean; error?: string }> {
     const res = await fetch(`${this.baseUrl}/api/reviews`, {
       method: "POST",
