@@ -121,7 +121,7 @@ export async function POST(request: NextRequest) {
   const review = await Review.create({
     ...data,
     status,
-    product: data.product || null,
+    product: data.product || undefined,
     source: "review-app",
   });
 
